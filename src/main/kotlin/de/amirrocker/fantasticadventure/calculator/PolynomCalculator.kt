@@ -4,14 +4,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
 
-// represents 3x ->
-data class Term(
-    val variable:Double,
-    val value:Double,
-    var representation:String = ""
-)
-
-
 class PolynomCalculator(
 ) {
 
@@ -29,18 +21,18 @@ class PolynomCalculator(
     }
 
     infix fun add(a:Double):PolynomCalculator {
-        postNewValue(a)
+        postNewValue(listOf(a))
         return this
     }
 
     infix fun subtract(a:Double):PolynomCalculator {
         postNewValue(
-            if(a<0) a else -a
+            if(a<0) listOf(a) else listOf(-a)
         )
         return this
     }
 
-    infix fun term(term:Term):PolynomCalculator {
+    infix fun term(term:Double):PolynomCalculator {
         postNewValue(
             solveTerm(term)
         )
@@ -49,19 +41,25 @@ class PolynomCalculator(
 
     // solves 2x
     // where variable = x and value = 2
-    fun solveTerm(term:Term) = term.value * term.variable
+    // Note: for now only once - remember we need 0..10
+    fun solveTerm(term:Double) = (0 until 1).map { term }
 
-    fun postNewValue(newInput:Double) {
-        termList.add(newInput)
+    fun postNewValue(newInput:List<Double>) {
+        termList.add(newInput[0])
         subject.onNext(this)
     }
 
     fun returnResult() = result
 
-    suspend fun handleInput() {
-
+    // start with solving the string function into terms
+    infix fun solve(func:String) {
+        val regex = """\dx""".toRegex()
+        val matchResult = regex.find(func)
+        println(matchResult.value)
     }
 
+    suspend fun handleInput() {
+    }
 }
 
 // kinda working - one can add and subtract

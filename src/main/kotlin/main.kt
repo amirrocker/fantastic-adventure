@@ -9,7 +9,7 @@ fun main() {
 //    println("calc: $calculator")
 
     val calculator = PolynomCalculator()
-    calculator.postNewValue(3.0)
+    calculator.postNewValue(listOf(3.0))
 
     println("calc: $calculator")
 
