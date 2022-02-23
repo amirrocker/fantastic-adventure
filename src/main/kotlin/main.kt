@@ -1,4 +1,6 @@
 import de.amirrocker.fantasticadventure.calculator.PolynomCalculator
+import de.amirrocker.fantasticadventure.kotlindl.detectObjectsInStillImage
+import de.amirrocker.fantasticadventure.kotlindl.testKotlinDL
 
 fun main() {
 //    val calculator = Calculator(10, 12)
@@ -8,9 +10,14 @@ fun main() {
 //
 //    println("calc: $calculator")
 
-    val calculator = PolynomCalculator()
-    calculator.postNewValue(listOf(3.0))
+//    val calculator = PolynomCalculator()
+//    calculator.postNewValue(listOf(3.0))
+//
+//    println("calc: $calculator")
 
-    println("calc: $calculator")
+//    testKotlinDL()
+
+
+    detectObjectsInStillImage()
 
 }

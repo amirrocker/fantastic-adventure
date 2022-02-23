@@ -55,7 +55,7 @@ class PolynomCalculator(
     infix fun solve(func:String) {
         val regex = """\dx""".toRegex()
         val matchResult = regex.find(func)
-        println(matchResult.value)
+        println(matchResult?.value)
     }
 
     suspend fun handleInput() {
