@@ -1,9 +1,13 @@
 package de.amirrocker.fantasticadventure.kotlindl
 
+//import DATASET_FLIGHTSDELAYED
+//import DATASET_SEAGAL
+import DATASET_WOHNUNGSPREISE
 import de.amirrocker.fantasticadventure.math.Matrix
 import jetbrains.letsPlot.GGBunch
 import jetbrains.letsPlot.Stat
 import jetbrains.letsPlot.export.ggsave
+import jetbrains.letsPlot.geom.geomArea
 import jetbrains.letsPlot.geom.geomBar
 import jetbrains.letsPlot.geom.geomLine
 import jetbrains.letsPlot.geom.geomPoint
@@ -11,12 +15,17 @@ import jetbrains.letsPlot.ggsize
 import jetbrains.letsPlot.intern.Plot
 import jetbrains.letsPlot.letsPlot
 import krangl.DataFrame
+import krangl.OR
+import krangl.`=`
+import krangl.count
 import krangl.dataFrameOf
 import krangl.gt
 import krangl.le
 import krangl.max
+import krangl.mean
 import krangl.min
 import krangl.print
+import krangl.range
 import krangl.readCSV
 import krangl.schema
 import java.awt.Dimension
@@ -25,6 +34,42 @@ import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 
+// minimal lets_plot solution
+// https://github.com/JetBrains/lets-plot-kotlin/blob/master/README_DEV.md
+fun minimal() {
+    // THROWS ERROR - NO BACKEND !
+//    val rand = java.util.Random()
+//    val n = 200
+//    val data = mapOf<String, Any>(
+//        "x" to List(n) { rand.nextGaussian() }
+//    )
+//    val p = letsPlot(data) +
+//            geomDensity(
+//                color = "dark-green",
+//                fill = "green",
+//                alpha = .3,
+//                size = 2.0
+//            ) { x = "x" }
+//    p.show()
+
+    val xs = listOf(0, 0.5, 1, 2)
+    val ys = listOf(0, 0.25, 1, 4)
+    val data = mapOf<String, Any>("x" to xs, "y" to ys)
+
+    val fig = letsPlot(data) + geomPoint(
+        color = "dark-green",
+        size = 4.0
+    ) { x = "x"; y = "y" }
+
+    // this works since we need not draw on Context, (which is missing?) but instead draw into file.
+    ggsave(fig, "plot.png")
+}
+
+/**
+ * with krangl DataFrames, same as in Pandas, can be used in kotlin.
+ * https://github.com/holgerbrandl/krangl
+ *
+ */
 fun createManualDataframe() {
 
     val df: DataFrame =
@@ -38,6 +83,7 @@ fun createManualDataframe() {
 
 }
 
+// read in csv and play around a bit...
 fun readInCsv() {
     val df: DataFrame = DataFrame.readCSV("src/main/resources/datasets/wohnungspreise.csv")
 
@@ -66,67 +112,96 @@ fun readInCsv() {
     println(result)
     val result11 = df.filter { it["Quadratmeter"] le 11 }
     println(result11)
-
-//    println(columnQM.length)
-//    println(columnVP.length)
 }
 
-fun letsPlotALinePlot(csvFilepath: String) {
-//    val df: DataFrame = DataFrame.readCSV("src/main/resources/datasets/wohnungspreise.csv")
+// a number of const values
+const val plotImageFilename = "plot.png"
+const val plotBunchImageFilename = "plotBunch.png"
+const val baseFolder = "./lets-plot-images"
 
-//    val df: DataFrame = fromCsvToDataFrame( csvFilepath /*"src/main/resources/datasets/wohnungspreise.csv"*/)
-
-//    val quadratmeter = df["Quadratmeter"].values().toList()
-//    val verkaufspreis = df["Verkaufspreis"].values().toList()
-//    println(quadratmeter)
-//    println(verkaufspreis)
-//
-//    val data = mapOf(
-//        "Quadratmeter" to quadratmeter,
-//        "Verkaufspreis" to verkaufspreis
-//    )
-    //val data =
-
-    // line plot
-//    val p = letsPlot(data) +
-//            geomLine { x = "Quadratmeter"; y = "Verkaufspreis" } + ggsize(500, 250)
-
-    // scatter plot
-//    val p = letsPlot(data) +
-//            geomPoint(data) { x = "Quadratmeter"; y="Verkaufspreis"; color="Verkaufspreis" } + ggsize(500, 250)
-
-//    val p = createPointPlot(data)
-
-//    ggsave( createPointPlot(data), plotImageFilename /*"Wohnungspreise.png"*/)
-//
-////    visualize(File("./lets-plot-images/Wohnungspreise.png"))
-//    visualize(File("$baseFolder/$plotImageFilename"))
+// visualize in a first version
+// as a single line plot
+// later examples show how to define different plot types
+fun plotLinePlot(csvFilepath: String) =
     saveAndVisualize(
         prepareData(
             fromCsvToDataFrame(csvFilepath)
         )
     )
-}
 
-val plotImageFilename = "Wohnungspreise.png"
-val plotBunchImageFilename = "Wohnungspreise.png"
-val baseFolder = "./lets-plot-images"
+// plot a custom area plot defined as lambda
+fun plotAreaPlot(csvFilepath: String) =
+    saveAndVisualize(
+        prepareData(
+            fromCsvToDataFrame(csvFilepath)
+        )
+    ) { data ->
+        // we assume a pair for now
+        // but later we need to use layers to setup
+        // a single layer per dependent variable or column
+        val xLabel = data.keys.first()
+        val ylabel = data.keys.last()
 
-fun saveAndVisualize(data: Map<String, List<Any?>>) {
-    ggsave(createPointPlot(data), plotImageFilename)
-    visualize(File("$baseFolder/$plotImageFilename"))
-}
+        val plot = letsPlot(data) +
+                geomArea { x = xLabel; y = ylabel; Stat.identity } + ggsize(500, 250)
+        plot
+    }
 
-fun saveBunchAndVisualize(data: Map<String, List<Any?>>, plotConfig:(Map<String, List<Any?>>)->GGBunch? = { null }) {
+/**
+ * plot a number of single plot layers into a bunch and display.
+ * the default plot is a line plot with a scatter plot below.
+ * use lambda to customize.
+ */
+fun plotCustomPlots(csvFilepath: String) =
+    saveBunchAndVisualize(
+        prepareData(
+            fromCsvToDataFrame(csvFilepath)
+        )
+    ) { data ->
+        // line plot
 
-    val bunchOfPlots = plotConfig(data) ?: run {
+        // we assume a pair for now
+        // but later we need to use layers to setup
+        // a single layer per dependent variable or column
+        val xLabel = data.keys.first()
+        val ylabel = data.keys.last()
+
         val pA = letsPlot(data) +
-                geomLine { x = "Quadratmeter"; y = "Verkaufspreis" } + ggsize(500, 250)
+                geomLine { x = xLabel; y = ylabel } + ggsize(500, 250)
 
         // scatter plot
         val pB = letsPlot(data) +
-                geomPoint(data) { x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis" } + ggsize(500, 250)
+                geomPoint(data, stat = Stat.identity) { x = xLabel; y = ylabel; color = ylabel } + ggsize(500, 250)
 
+        val pC = letsPlot(data) +
+                geomBar(data, stat = Stat.identity) { x = xLabel; y = ylabel; color = ylabel } + ggsize(500, 250)
+
+        val bunchOfPlots = GGBunch()
+            .addPlot(pA, 0, 0)
+            .addPlot(pB, 0, 260)
+            .addPlot(pC, 0, 520)
+        bunchOfPlots
+    }
+
+
+private fun saveBunchAndVisualize(
+    data: Map<String, List<Any?>>,
+    plotConfig: (Map<String, List<Any?>>) -> GGBunch? = { null },
+) {
+
+    // we assume a pair for now
+    // but later we need to use layers to setup
+    // a single layer per dependent variable or column
+    val xLabel = data.keys.first()
+    val ylabel = data.keys.last()
+
+    val bunchOfPlots = plotConfig(data) ?: run {
+        val pA = letsPlot(data) +
+                geomLine { x = xLabel; y = ylabel } + ggsize(500, 250)
+
+        // scatter plot
+        val pB = letsPlot(data) +
+                geomPoint(data) { x = xLabel; y = ylabel; color = ylabel } + ggsize(500, 250)
 
         val bunchOfPlots = GGBunch()
             .addPlot(pA, 0, 0)
@@ -139,11 +214,25 @@ fun saveBunchAndVisualize(data: Map<String, List<Any?>>, plotConfig:(Map<String,
     visualize(File("$baseFolder/$plotBunchImageFilename"))
 }
 
+/**
+ * If no lambda is used to setup a custom plot a simple line plot is used.
+ *
+ */
+private fun saveAndVisualize(data: Map<String, List<Any?>>, plotConfig: (Map<String, List<Any?>>) -> Plot? = { null }) {
 
-fun createPointPlot(data: Map<String, List<Any?>>): Plot =
-    letsPlot(data) +
-            geomPoint(data) { x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis" } + ggsize(500, 250)
+    // we assume a pair for now
+    // but later we need to use layers to setup
+    // a single layer per dependent variable or column
+    val xLabel = data.keys.first()
+    val ylabel = data.keys.last()
 
+    val plot = plotConfig(data) ?: run {
+        letsPlot(data) +
+                geomLine { x = xLabel; y = ylabel; color = ylabel } + ggsize(500, 250)
+    }
+    ggsave(plot, plotImageFilename)
+    visualize(File("$baseFolder/$plotImageFilename"))
+}
 
 fun prepareData(df: DataFrame): Map<String, List<Any?>> =
     df.cols.map {
@@ -261,6 +350,49 @@ fun runSomeMatrices() {
 fun Rank_0_Tensor(value: Double) = Matrix.asMatrix(Pair(1, 1), doubleArrayOf(value).toTypedArray())
 
 
+// Krangl
+// play around with krangl and check its basic features:
+// https://holgerbrandl.github.io/data_science_with_kotlin/data_science_with_kotlin.html#18
+
+fun summarizeWithFixedColumnNames() {
+
+    val df = DataFrame.readCSV(DATASET_WOHNUNGSPREISE)
+    val result = df.count("Quadratmeter", "Verkaufspreis")
+    println(result)
+
+    val summarized = df
+        .groupBy("Verkaufspreis", "Quadratmeter")
+        .select({ range("Quadratmeter", "Verkaufspreis") })
+        .summarize(
+            "Quadratmeter_Mean" `=` {
+                it["Quadratmeter"].mean(removeNA = true)
+            },
+            "Verkaufspreis_Mean" `=` {
+                it["Verkaufspreis"].mean(removeNA = true)
+            }
+        )
+    println(summarized)
+}
+
+// look at that when time!
+//fun summarizeAndAppendMeanValues() {
+//
+////    val df = DataFrame.readCSV(DATASET_WOHNUNGSPREISE)
+////    val df = DataFrame.readCSV(DATASET_FLIGHTSDELAYED)
+//    val df = DataFrame.readCSV(DATASET_SEAGAL)
+//    df.schema()
+//
+//    val summarized = df
+//        .groupBy("Year", "Budget" )
+//        .select { range("Year", "Budget") }
+//        .summarize(
+//            "Budget_Mean" `=` { it["Budget"].mean(removeNA = true) },
+//            "Year_Mean" `=` { it["Year"].mean(removeNA = true) },
+//        )
+//        .filter { (it["Budget_Mean"] gt 20) OR (it["Year_Mean"] gt 30) }
+//        .sortedBy("Budget_Mean")
+//    println(summarized)
+//}
 
 
 

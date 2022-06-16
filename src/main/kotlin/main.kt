@@ -4,6 +4,8 @@ import de.amirrocker.fantasticadventure.kotlindl.minimal
 import de.amirrocker.fantasticadventure.kotlindl.readInCsv
 import de.amirrocker.fantasticadventure.kotlindl.runSomeMatrices
 import de.amirrocker.fantasticadventure.kotlindl.runTheBunch
+import de.amirrocker.fantasticadventure.kotlindl.summarizeAndAppendMeanValues
+import de.amirrocker.fantasticadventure.kotlindl.summarizeWithFixedColumnNames
 
 const val DATASET_WOHNUNGSPREISE = "src/main/resources/datasets/wohnungspreise.csv"
 
@@ -41,6 +43,13 @@ fun main() {
 
 //    runSomeMatrices()
 
+    // check krangl basics
 
+    /*
+    * Summarise cases
+    *
+    */
+    summarizeWithFixedColumnNames()
+    summarizeAndAppendMeanValues()
 
 }
