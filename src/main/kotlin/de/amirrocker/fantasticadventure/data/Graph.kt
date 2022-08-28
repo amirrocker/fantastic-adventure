@@ -123,9 +123,6 @@ class SimpleGraph {
     // comes down to how the queue / stack are accessed and items removed.
     // Other than that impl. is similar.
 
-
-
-
 }
 
 

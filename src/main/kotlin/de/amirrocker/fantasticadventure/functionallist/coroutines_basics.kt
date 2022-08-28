@@ -1,20 +1,5 @@
 package de.amirrocker.fantasticadventure.functionallist
 
-sealed class FunctionalList<out T> {
-    object Nil : FunctionalList<Nothing>()
-    data class Construct<T>(val head: T, val tail: FunctionalList<T>): FunctionalList<T>()
-}
-
-fun listOfString(vararg strings:String):FunctionalList<String> = if(strings.isEmpty()) {
-    FunctionalList.Nil
-} else {
-    FunctionalList.Construct(
-        head = strings.first(),
-        tail = listOfString(*strings.drop(1).toTypedArray())
-    )
-}
-
-
 //fun main(): Unit = runBlocking {
 
 //    val funList = listOfString("String 1", "String 2", "String 3")

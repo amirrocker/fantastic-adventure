@@ -1,11 +1,4 @@
-import de.amirrocker.fantasticadventure.kotlindl.createManualDataframe
-import de.amirrocker.fantasticadventure.kotlindl.letsPlotALinePlot
-import de.amirrocker.fantasticadventure.kotlindl.minimal
-import de.amirrocker.fantasticadventure.kotlindl.readInCsv
-import de.amirrocker.fantasticadventure.kotlindl.runSomeMatrices
-import de.amirrocker.fantasticadventure.kotlindl.runTheBunch
-import de.amirrocker.fantasticadventure.kotlindl.summarizeAndAppendMeanValues
-import de.amirrocker.fantasticadventure.kotlindl.summarizeWithFixedColumnNames
+import de.amirrocker.fantasticadventure.arrow.runLeftIdentityLaw
 
 const val DATASET_WOHNUNGSPREISE = "src/main/resources/datasets/wohnungspreise.csv"
 
@@ -39,7 +32,7 @@ fun main() {
 //    letsPlotALinePlot( DATASET_WOHNUNGSPREISE /*"src/main/resources/datasets/wohnungspreise.csv"*/)
 
     // works
-    runTheBunch(DATASET_WOHNUNGSPREISE)
+//    runTheBunch(DATASET_WOHNUNGSPREISE)
 
 //    runSomeMatrices()
 
@@ -49,7 +42,10 @@ fun main() {
     * Summarise cases
     *
     */
-    summarizeWithFixedColumnNames()
-    summarizeAndAppendMeanValues()
+//    summarizeWithFixedColumnNames()
+//    summarizeAndAppendMeanValues()
+
+    // arrow stuff
+    runLeftIdentityLaw()
 
 }

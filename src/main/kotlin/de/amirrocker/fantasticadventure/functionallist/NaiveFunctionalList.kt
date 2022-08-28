@@ -62,7 +62,8 @@ fun test() {
         stringA.replaceFirstChar { if( it.isLowerCase() ) it.titlecase() else it.toString() }
             .plus(stringB.replaceFirstChar { if( it.isLowerCase() ) it.titlecase() else it.toString() })
     }
-
     println("foldedList: $foldedList")
+
+
 
 }

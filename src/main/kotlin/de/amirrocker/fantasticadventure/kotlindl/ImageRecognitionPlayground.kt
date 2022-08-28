@@ -270,36 +270,6 @@ fun runTheBunch(csvFilepath: String) {
     }
 }
 
-
-fun minimal() {
-    // THROWS ERROR - NO BACKEND !
-//    val rand = java.util.Random()
-//    val n = 200
-//    val data = mapOf<String, Any>(
-//        "x" to List(n) { rand.nextGaussian() }
-//    )
-//    val p = letsPlot(data) +
-//            geomDensity(
-//                color = "dark-green",
-//                fill = "green",
-//                alpha = .3,
-//                size = 2.0
-//            ) { x = "x" }
-//    p.show()
-
-    val xs = listOf(0, 0.5, 1, 2)
-    val ys = listOf(0, 0.25, 1, 4)
-    val data = mapOf<String, Any>("x" to xs, "y" to ys)
-
-    val fig = letsPlot(data) + geomPoint(
-        color = "dark-green",
-        size = 4.0
-    ) { x = "x"; y = "y" }
-
-    // this works since we need not draw on Context, (which is missing?) but instead draw into file.
-    ggsave(fig, "plot.png")
-}
-
 private fun visualize(
     imageFile: File,
 ) {
@@ -374,25 +344,24 @@ fun summarizeWithFixedColumnNames() {
     println(summarized)
 }
 
-// look at that when time!
-//fun summarizeAndAppendMeanValues() {
-//
-////    val df = DataFrame.readCSV(DATASET_WOHNUNGSPREISE)
-////    val df = DataFrame.readCSV(DATASET_FLIGHTSDELAYED)
+fun summarizeAndAppendMeanValues() {
+
+    val df = DataFrame.readCSV(DATASET_WOHNUNGSPREISE)
+//    val df = DataFrame.readCSV(DATASET_FLIGHTSDELAYED)
 //    val df = DataFrame.readCSV(DATASET_SEAGAL)
-//    df.schema()
-//
-//    val summarized = df
-//        .groupBy("Year", "Budget" )
-//        .select { range("Year", "Budget") }
-//        .summarize(
-//            "Budget_Mean" `=` { it["Budget"].mean(removeNA = true) },
-//            "Year_Mean" `=` { it["Year"].mean(removeNA = true) },
-//        )
-//        .filter { (it["Budget_Mean"] gt 20) OR (it["Year_Mean"] gt 30) }
-//        .sortedBy("Budget_Mean")
-//    println(summarized)
-//}
+    df.schema()
+
+    val summarized = df
+        .groupBy("Quadratmeter", "Verkaufspreis" )
+        .select { range("Quadratmeter", "Verkaufspreis") }
+        .summarize(
+            "Quadratmeter_Mean" `=` { it["Quadratmeter"].mean(removeNA = true) },
+            "Verkaufspreis_Mean" `=` { it["Verkaufspreis"].mean(removeNA = true) },
+        )
+        .filter { (it["Quadratmeter_Mean"] gt 20) OR (it["Verkaufspreis_Mean"] gt 30) }
+        .sortedBy("Verkaufspreis_Mean")
+    println(summarized)
+}
 
 
 
