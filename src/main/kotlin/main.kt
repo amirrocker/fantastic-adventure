@@ -1,4 +1,7 @@
+import de.amirrocker.fantasticadventure.arrow.AddToEither
+import de.amirrocker.fantasticadventure.arrow.runComprehensionOverCoroutinesMinimal
 import de.amirrocker.fantasticadventure.arrow.runLeftIdentityLaw
+import kotlinx.coroutines.runBlocking
 
 const val DATASET_WOHNUNGSPREISE = "src/main/resources/datasets/wohnungspreise.csv"
 
@@ -46,6 +49,10 @@ fun main() {
 //    summarizeAndAppendMeanValues()
 
     // arrow stuff
-    runLeftIdentityLaw()
+    // runLeftIdentityLaw()
+    runBlocking {
+        // runComprehensionOverCoroutinesMinimal()
+        println(AddToEither())
+    }
 
 }
