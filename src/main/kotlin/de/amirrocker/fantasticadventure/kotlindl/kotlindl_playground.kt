@@ -60,8 +60,8 @@ fun detectObjectsInStillImage(imageFileName:String = "images/image2.jpg") {
         }
         visualize(image, detectedObjects)
     }
-
 }
+
 @Throws(URISyntaxException::class)
 fun getFileFromResource(fileName:String):File {
     val classLoader:ClassLoader = object {}.javaClass.classLoader

@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.kapt" version "1.1.2-2"
+    id "org.jetbrains.kotlin.kapt" version "1.7.0"
     id 'org.jetbrains.kotlin.jvm' version '1.5.31'
     id 'application'
 }
@@ -34,7 +34,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlin-deeplearning-visualization:0.3.0'
     // separate dependency for onnx extensions for kotlin
     implementation 'org.jetbrains.kotlinx:kotlin-deeplearning-onnx:0.3.0'
-
     // GPU support for tensor calculation (nvidia only)
     api 'org.tensorflow:libtensorflow:1.15.0'
     api 'org.tensorflow:libtensorflow_jni_gpu:1.15.0'
@@ -86,6 +85,16 @@ dependencies {
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4')
 
 
+
+    // arrow-kt
+    def arrow_version = "1.0.1"
+
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4')
+
+    implementation("io.arrow-kt:arrow-fx-coroutines:1.0.1")
+    implementation("io.arrow-kt:arrow-fx-stm:1.0.1")
 
 }
 

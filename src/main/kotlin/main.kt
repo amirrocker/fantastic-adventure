@@ -59,4 +59,18 @@ fun main() {
 
     }
 
+    // summarizeWithFixedColumnNames()
+    // summarizeAndAppendMeanValues()
+
+    // testComposition()
+
+    // function Composition:
+    // calculatePrices()
+
+    // partialApplication()
+
+    // testPartialSplitter()
+
+
+
 }

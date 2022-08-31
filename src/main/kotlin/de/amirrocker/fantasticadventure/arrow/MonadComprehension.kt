@@ -5,17 +5,24 @@ package de.amirrocker.fantasticadventure.arrow
 import arrow.core.Either
 import arrow.core.Either.Left
 import arrow.core.Either.Right
-import arrow.core.computations.either
-import arrow.core.computations.ensureNotNull
 import arrow.core.flatMap
+import arrow.core.continuations.either
+import arrow.core.continuations.ensureNotNull
 
 /** model */
 object NotFound
-data class Name(val value:String)
-data class UniversityId(val value:String)
-data class University(val name:Name, val deanName: Name)
-data class Student(val name:Name, val universityId: UniversityId)
-data class Dean(val name:Name)
+
+@JvmInline
+value class Name(val value: String)
+@JvmInline
+value class Age(val value: Int)
+@JvmInline
+value class UniversityId(val value: String)
+@JvmInline
+value class Dean(val name: Name)
+
+data class University(val name: Name, val deanName: Name)
+data class Student(val name: Name, val universityId: UniversityId)
 
 /* student db */
 private val students = mapOf(
@@ -33,13 +40,13 @@ private val deans = mapOf(
 )
 
 /* Repository API */
-suspend fun student(name:Name): Either<NotFound, Student> =
+suspend fun student(name: Name): Either<NotFound, Student> =
     students[name]?.let(::Right) ?: Left(NotFound)
 
-suspend fun university(universityId:UniversityId): Either<NotFound, University> =
+suspend fun university(universityId: UniversityId): Either<NotFound, University> =
     universities[universityId]?.let(::Right) ?: Left(NotFound)
 
-suspend fun dean(name:Name): Either<NotFound, Dean> =
+suspend fun dean(name: Name): Either<NotFound, Dean> =
     deans[name]?.let(::Right) ?: Left(NotFound)
 
 // monad test
@@ -67,8 +74,8 @@ suspend fun AddToEither() =
     either<String, Int> {
         val one = Right(1).fold(
             ifLeft = {
-                    it
-                },
+                it
+            },
             ifRight = {
                 it
             }
@@ -89,12 +96,10 @@ fun WithoutComprehensions() = Right(1).flatMap {
 
 // Dean fetching with comprehensions
 // is a lot better to read than the flatMap variant without comprehensions.
-suspend fun fetchDean():Either<NotFound, Dean> = either {
+suspend fun fetchDean(): Either<NotFound, Dean> = either {
     val alice = student(Name("Alice")).bind()
     val uca = university(UniversityId("UCA")).bind()
     val dean = dean(Name("DeanDude")).bind()
     dean
 }
-
-
 

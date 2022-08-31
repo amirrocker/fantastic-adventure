@@ -1,7 +1,7 @@
 package de.amirrocker.fantasticadventure.graph
 
 import de.amirrocker.fantasticadventure.data.SimpleGraph
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 class SimpleGraphTest {
 

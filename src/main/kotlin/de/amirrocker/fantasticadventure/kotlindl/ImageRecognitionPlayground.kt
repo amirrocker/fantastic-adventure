@@ -36,7 +36,7 @@ import javax.swing.JFrame
 
 // minimal lets_plot solution
 // https://github.com/JetBrains/lets-plot-kotlin/blob/master/README_DEV.md
-fun minimal() {
+fun minimal2() {
     // THROWS ERROR - NO BACKEND !
 //    val rand = java.util.Random()
 //    val n = 200
@@ -251,16 +251,20 @@ fun runTheBunch(csvFilepath: String) {
             fromCsvToDataFrame(csvFilepath)
         )
     ) { data ->
-       // line plot
+        // line plot
         val pA = letsPlot(data) +
                 geomLine { x = "Quadratmeter"; y = "Verkaufspreis" } + ggsize(500, 250)
 
         // scatter plot
         val pB = letsPlot(data) +
-                geomPoint(data, stat = Stat.identity) { x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis" } + ggsize(500, 250)
+                geomPoint(data, stat = Stat.identity) {
+                    x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis"
+                } + ggsize(500, 250)
 
         val pC = letsPlot(data) +
-                geomBar(data, stat = Stat.identity) { x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis" } + ggsize(500, 250)
+                geomBar(data, stat = Stat.identity) {
+                    x = "Quadratmeter"; y = "Verkaufspreis"; color = "Verkaufspreis"
+                } + ggsize(500, 250)
 
         val bunchOfPlots = GGBunch()
             .addPlot(pA, 0, 0)
