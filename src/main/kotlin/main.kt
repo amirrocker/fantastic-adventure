@@ -1,6 +1,7 @@
 import de.amirrocker.fantasticadventure.arrow.AddToEither
 import de.amirrocker.fantasticadventure.arrow.runComprehensionOverCoroutinesMinimal
 import de.amirrocker.fantasticadventure.arrow.runLeftIdentityLaw
+import de.amirrocker.fantasticadventure.arrow.testParallelCancellation
 import kotlinx.coroutines.runBlocking
 
 const val DATASET_WOHNUNGSPREISE = "src/main/resources/datasets/wohnungspreise.csv"
@@ -52,7 +53,10 @@ fun main() {
     // runLeftIdentityLaw()
     runBlocking {
         // runComprehensionOverCoroutinesMinimal()
-        println(AddToEither())
+        // println(AddToEither())
+
+        println(testParallelCancellation())
+
     }
 
 }

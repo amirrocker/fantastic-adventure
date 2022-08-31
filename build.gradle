@@ -1,7 +1,7 @@
 plugins {
     id "org.jetbrains.kotlin.kapt" version "1.1.2-2"
     id 'org.jetbrains.kotlin.jvm' version '1.5.31'
-    id 'java'
+    id 'application'
 }
 
 group = 'de.amirrocker'
@@ -12,13 +12,19 @@ repositories {
 }
 
 dependencies {
+    // DO NOT UPDATE WITHOUT FINDING THE REASON WHY IT BREAKS FIRST
+    // !!updating the version on this breaks the build!! //
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+
+
+//    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 
     implementation 'io.reactivex.rxjava3:rxjava:3.1.4'
     implementation "io.reactivex.rxjava3:rxkotlin:3.0.1"
-
-    testImplementation 'org.jetbrains.kotlin:kotlin-test:1.6.21'
-
-    testImplementation 'org.amshove.kluent:kluent:1.68'
+//
+//    testImplementation 'org.jetbrains.kotlin:kotlin-test:1.7.10'
+//
+//    testImplementation 'org.amshove.kluent:kluent:1.68'
 
     // look here for resources:
     // https://github.com/JetBrains/KotlinDL
@@ -45,22 +51,22 @@ dependencies {
     implementation 'org.codehaus.griffon:griffon-javafx:2.16.0'
     implementation 'org.codehaus.griffon:griffon-guice:2.16.0'
 
-//    implementation 'org.openjfx:javafx-base:18.0.1'
-//    implementation 'org.openjfx:javafx-swing:18.0.1'
-//    implementation 'org.openjfx:javafx-graphics:18.0.1'
+    implementation 'org.openjfx:javafx-base:18.0.1'
+    implementation 'org.openjfx:javafx-swing:18.0.1'
+    implementation 'org.openjfx:javafx-graphics:18.0.1'
 
 
-//    api "org.jetbrains.lets-plot:lets-plot-common:2.3.0"
+    api "org.jetbrains.lets-plot:lets-plot-common:2.3.0"
 
-//    compileOnly "org.jetbrains.lets-plot:lets-plot-batik:2.3.0"
-//    compileOnly "org.jetbrains.lets-plot:lets-plot-jfx:2.3.0"
-//    compileOnly "org.jetbrains.lets-plot:lets-plot-image-export:2.3.0"
+    compileOnly "org.jetbrains.lets-plot:lets-plot-batik:2.3.0"
+    compileOnly "org.jetbrains.lets-plot:lets-plot-jfx:2.3.0"
+    compileOnly "org.jetbrains.lets-plot:lets-plot-image-export:2.3.0"
 
-//    api "org.jetbrains.lets-plot:base-portable:2.3.0"
-//    api "org.jetbrains.lets-plot:plot-base-portable:2.3.0"
-//    api "org.jetbrains.lets-plot:plot-common-portable:2.3.0"
-//    api "org.jetbrains.lets-plot:plot-builder-portable:2.3.0"
-//    api "org.jetbrains.lets-plot:plot-config-portable:2.3.0"
+    api "org.jetbrains.lets-plot:base-portable:2.3.0"
+    api "org.jetbrains.lets-plot:plot-base-portable:2.3.0"
+    api "org.jetbrains.lets-plot:plot-common-portable:2.3.0"
+    api "org.jetbrains.lets-plot:plot-builder-portable:2.3.0"
+    api "org.jetbrains.lets-plot:plot-config-portable:2.3.0"
 
     // val slf4j_version: String by project
     implementation 'org.slf4j:slf4j-simple:1.7.36'  // Enable logging to console
@@ -77,9 +83,9 @@ dependencies {
     implementation('io.arrow-kt:arrow-fx-coroutines:1.1.2')
     implementation('io.arrow-kt:arrow-fx-stm:1.1.2')
 
-    implementation('org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0')
-
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4')
+
+
 
 }
 
@@ -88,9 +94,13 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '12'
+    kotlinOptions.jvmTarget = '1.8'
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '12'
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+application {
+    mainClassName = 'MainKt'
 }
