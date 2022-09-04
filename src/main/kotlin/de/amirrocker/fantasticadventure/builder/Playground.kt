@@ -1,8 +1,23 @@
 package de.amirrocker.fantasticadventure.arrow
 
 import arrow.core.*
-import org.apache.xpath.operations.Quo
 import kotlin.random.Random
+
+/**
+ * just for the heck of it :) A minimizer for any function
+ *
+ */
+//tailrec fun <I:Number, O:Number> minimize( fn: (I)->O, min: I, budget:Int):I =
+//    if(budget <= 0) min
+//    else minimize(fn, sample<I>().let { input ->
+//        val resultA = fn(input)
+//        val resultB = fn(min)
+//        if( resultA.toDouble() <= resultB.toDouble()) input else min
+//        }, budget - 1
+//    )
+//
+////fun <T> sample( fn: (T) -> T, input: T):T = fn(input)
+//fun <T:Number> sample():T = Random(12345).nextDouble(0.0, 2.0)
 
 /**
  * Arrow (https://arrow-kt.io)
