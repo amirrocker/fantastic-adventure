@@ -4,6 +4,6 @@ import de.amirrocker.fantasticadventure.ysaarchitectureshowcase.data.HomeAggrega
 
 interface HomeInitializationPort {
 
-    fun initialize(): HomeAggregate
+    suspend fun initialize(): HomeAggregate
 
 }

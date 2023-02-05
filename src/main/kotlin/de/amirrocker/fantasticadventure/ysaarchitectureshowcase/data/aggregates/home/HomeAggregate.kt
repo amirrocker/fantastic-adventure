@@ -1,9 +1,12 @@
 package de.amirrocker.fantasticadventure.ysaarchitectureshowcase.data
 
+import de.amirrocker.fantasticadventure.ysaarchitectureshowcase.data.model.Contract
+import de.amirrocker.fantasticadventure.ysaarchitectureshowcase.data.model.Customer
+
 sealed class Aggregate // if there are overarching concerns, these could be inserted here, like authorization or authentication.
 
 class HomeAggregate(
-    customer:Customer,
+    customer: Customer,
     contract: Contract
 ): Aggregate() {
 
