@@ -81,4 +81,15 @@ fun allBooksWeights() = mustHaves
 
 typealias Func<A, B> = (A) -> B
 
-//infix fun <A, B> Func<A, B>.after( fn: Func<A, B>):Func<A, B> = { x:A -> f(x) }
+infix fun <A, B> Func<A, B>.after( fn: Func<A, B>):Func<A, B> = { x:A -> fn(x) }
+
+fun test(a:Int, b:Int) {
+    println("a and b")
+}
+fun test2() {
+//    test(2, 4) after ({x:Int -> x*x})
+    test(2, 4) after {i: Int ->i * i }
+}
+private infix fun Any.after(fn: (Int) -> Int) {
+    TODO("Not yet implemented")
+}
