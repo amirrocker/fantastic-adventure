@@ -55,7 +55,7 @@ class LetsPlotScratchpad : Application() {
     val random = java.util.Random()
     val df = mapOf(
         "x" to (-100 .. 100).toList(),
-        "y" to (-100 .. 100).map { random.nextDouble(0.0, 1.0) }
+        "y" to (-100 .. 100).map { random.nextDouble() }
     )
     val showPlot = letsPlot(data = df) {
         x = "x"
@@ -131,7 +131,7 @@ class LetsPlotScratchpad : Application() {
         val rnd = java.util.Random()
         val data = mapOf(
             "x" to (-15..14).toList(),
-            "y" to (0..29).map { rnd.nextDouble(1.0, 5.0) },
+            "y" to (0..29).map { rnd.nextDouble() },
             "sugar" to (150..179).toList()
         )
 

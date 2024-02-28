@@ -22,8 +22,6 @@ javafx {
 mainClassName = '' +
         'de.amirrocker.fantasticadventure.scratchpad.LetsPlotScratchpad'
 
-
-
 dependencies {
     // DO NOT UPDATE WITHOUT FINDING THE REASON WHY IT BREAKS FIRST
     // !!updating the version on this breaks the build!! //

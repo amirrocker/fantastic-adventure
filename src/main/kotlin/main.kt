@@ -1,5 +1,6 @@
 import de.amirrocker.fantasticadventure.kotlindl.runSomeMatrices
 import de.amirrocker.fantasticadventure.thejoyof.runPolymorphicCalculatorTest
+import de.amirrocker.fantasticadventure.thejoyof.testDifferentCalculationLambdas
 import de.amirrocker.fantasticadventure.thejoyof.testMe
 import de.amirrocker.fantasticadventure.thejoyof.testPolyTuple
 
@@ -96,6 +97,9 @@ fun main() {
     testPolyTuple(3, 3)
     // test with Double & Double
     testPolyTuple(2.5, 2.0)
+    // play around with some more function composition
+    testDifferentCalculationLambdas()
+
 
 
 }
